@@ -42,6 +42,7 @@ FD_CMD=$(check_dependency "" fdfind fd)
 check_dependency " (from GNU Coreutils)" mktemp
 check_dependency "" shasum
 check_dependency " (from GNU Coreutils)" shuf
+check_dependency "" xargs
 
 if [ ! -d "$DIR1" ]; then
    echo "First directory does not exist: $DIR1"
@@ -63,7 +64,7 @@ TEMP_DIR=$(mktemp -d)
 trap "rm -rf $TEMP_DIR" 0 1 15
 $FD_CMD $NO_IGNORE --type f . "$DIR1" | shuf -n $SAMPLE_SIZE > "$TEMP_DIR/random-sample.txt"
 
-SAMPLE_SIZE=$(wc -l < "$TEMP_DIR/random-sample.txt")
+SAMPLE_SIZE=$(wc -l < "$TEMP_DIR/random-sample.txt"|xargs)
 
 while read -r dir1_file; do
    relative_path="${dir1_file#$DIR1/}"
