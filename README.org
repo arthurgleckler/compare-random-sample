@@ -1,0 +1,5 @@
+Compare a randomly chosen subset of files in one directory to
+corresponding files in another directory.  I wrote this to automate
+testing backups by random sampling.
+
+See [[https://speechcode.com/blog/backup-sampling][my blog post]] for details.
