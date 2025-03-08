@@ -1,7 +1,7 @@
 #!/bin/bash
 
 usage() {
-   echo "Usage: $0 <dir1> <dir2> <sample_size>"
+   echo "Usage: `(basename $0)` <dir1> <dir2> <sample_size>"
    exit 1
 }
 
