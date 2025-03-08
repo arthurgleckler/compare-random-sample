@@ -38,6 +38,9 @@ TEMP_DIR=$(mktemp -d)
 
 trap "rm -rf $TEMP_DIR" 0 1 15
 $FD_CMD --type f . "$DIR1" | shuf -n $SAMPLE_SIZE > "$TEMP_DIR/random-sample.txt"
+
+SAMPLE_SIZE=$(wc -l < "$TEMP_DIR/random-sample.txt")
+
 while read -r dir1_file; do
    relative_path="${dir1_file#$DIR1/}"
    dir2_file="$DIR2/$relative_path"
