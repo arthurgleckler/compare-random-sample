@@ -1,9 +1,16 @@
 #!/bin/bash
 
 usage() {
-   echo "Usage: `(basename $0)` <dir1> <dir2> <sample_size>"
+   echo "Usage: `(basename $0)` [--no-ignore] <dir1> <dir2> <sample_size>"
    exit 1
 }
+
+NO_IGNORE=""
+
+if [ "$1" == "--no-ignore" ]; then
+  NO_IGNORE="--no-ignore"
+  shift
+fi
 
 if [ "$#" -ne 3 ]; then
    usage
@@ -54,7 +61,7 @@ fi
 TEMP_DIR=$(mktemp -d)
 
 trap "rm -rf $TEMP_DIR" 0 1 15
-$FD_CMD --type f . "$DIR1" | shuf -n $SAMPLE_SIZE > "$TEMP_DIR/random-sample.txt"
+$FD_CMD $NO_IGNORE --type f . "$DIR1" | shuf -n $SAMPLE_SIZE > "$TEMP_DIR/random-sample.txt"
 
 SAMPLE_SIZE=$(wc -l < "$TEMP_DIR/random-sample.txt")
 
