@@ -13,11 +13,28 @@ DIR1="$1"
 DIR2="$2"
 SAMPLE_SIZE="$3"
 
-if command -v fdfind &> /dev/null; then
-    FD_CMD="fdfind"
-else
-    FD_CMD="fd"
-fi
+check_dependency() {
+  msg="$1"
+  shift
+  if [ "$#" -eq 1 ]; then
+    command -v "$1" &> /dev/null || { echo "Please install $1$msg first." >&2; exit 1; }
+  else
+    for cmd in "$@"; do
+      if command -v "$cmd" &> /dev/null; then
+        echo "$cmd"
+        return 0
+      fi
+    done
+    echo "Please install one of: $* $msg first." >&2
+    exit 1
+  fi
+}
+
+FD_CMD=$(check_dependency "" fdfind fd)
+
+check_dependency " (from GNU Coreutils)" mktemp
+check_dependency "" shasum
+check_dependency " (from GNU Coreutils)" shuf
 
 if [ ! -d "$DIR1" ]; then
    echo "First directory does not exist: $DIR1"
