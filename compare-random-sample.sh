@@ -50,13 +50,18 @@ while read -r dir1_file; do
      if [[ "$dir1_checksum" != "$dir2_checksum" ]]; then
        echo
        echo "Checksum mismatch: $relative_path"
-       exit 1
+       mismatch=1
      fi
    else
      echo
      echo "File missing in backup: $relative_path"
-     exit 1
+     mismatch=1
    fi
    echo " done."
 done < "$TEMP_DIR/random-sample.txt"
-echo All $SAMPLE_SIZE files compared identical.
+if [ -z "$mismatch" ]; then
+  echo "All $SAMPLE_SIZE files compared identical."
+else
+  echo "There were mismatches."
+fi
+exit $mismatch
