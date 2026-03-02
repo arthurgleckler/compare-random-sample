@@ -75,8 +75,8 @@ while read -r dir1_file; do
 
    echo -n Checking $relative_path...
    if [[ -f "$dir2_file" ]]; then
-     dir1_checksum=$(openssl dgst -sha256 "$dir1_file" | awk '{ print $1 }')
-     dir2_checksum=$(openssl dgst -sha256 "$dir2_file" | awk '{ print $1 }')
+     dir1_checksum=$(openssl dgst -sha256 "$dir1_file" | awk '{ print $NF }')
+     dir2_checksum=$(openssl dgst -sha256 "$dir2_file" | awk '{ print $NF }')
 
      if [[ "$dir1_checksum" != "$dir2_checksum" ]]; then
        echo
