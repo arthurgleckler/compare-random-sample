@@ -43,7 +43,7 @@ check_dependency() {
 FD_CMD=$(check_dependency "" fdfind fd)
 
 check_dependency " (from GNU Coreutils)" mktemp
-check_dependency "" shasum
+check_dependency "" openssl
 check_dependency " (from GNU Coreutils)" shuf
 check_dependency "" xargs
 
@@ -75,8 +75,8 @@ while read -r dir1_file; do
 
    echo -n Checking $relative_path...
    if [[ -f "$dir2_file" ]]; then
-     dir1_checksum=$(shasum "$dir1_file" | awk '{ print $1 }')
-     dir2_checksum=$(shasum "$dir2_file" | awk '{ print $1 }')
+     dir1_checksum=$(openssl dgst -sha256 "$dir1_file" | awk '{ print $1 }')
+     dir2_checksum=$(openssl dgst -sha256 "$dir2_file" | awk '{ print $1 }')
 
      if [[ "$dir1_checksum" != "$dir2_checksum" ]]; then
        echo
